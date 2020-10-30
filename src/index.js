@@ -22,6 +22,23 @@ function md(options) {
 
       // tbody rows
       if (index !== 0) {
+        node.children = node.children.map( (tableCell, i) => {
+          if(i !== 0){
+            return {
+              ...tableCell,
+              data: {
+                hProperties: {
+                  className: classDesktop
+                }
+              }
+            }
+          }else{
+            return {
+              ...tableCell
+            }
+          }
+        })
+
         node.children[0].children = [
           {
             type: "div",
@@ -44,23 +61,22 @@ function md(options) {
           },
           {
             type: "div",
-            children: [
-              {
-                type: "paragraph",
-                children: [
-                  ...node.children[0].children,
-                  {
-                    type: "paragraph",
-                    children: node.children[1].children,
-                    data: {
-                      hProperties: {
-                        className: classMobile
-                      }
-                    }
-                  }
-                ]
+            children: node.children.map( (tableCell, i) => {
+              const object = {
+                type: 'paragraph',
+                ...tableCell
               }
-            ],
+
+              if(i !== 0){
+                object.data = {
+                  hProperties: {
+                    className: classMobile
+                  }
+                }
+              }
+
+              return object
+            }),
             data: {
               hProperties: {
                 className: classnames.content
@@ -68,15 +84,6 @@ function md(options) {
             }
           }
         ];
-
-        node.children[1] = {
-          ...node.children[1],
-          data: {
-            hProperties: {
-              className: classDesktop
-            }
-          }
-        };
       }
     }
   };

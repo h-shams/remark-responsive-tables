@@ -94,7 +94,7 @@ td {
 
   /* Mobile */
    {
-    display: block;
+    display: table-cell;
   }
 }
 
